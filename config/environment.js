@@ -7,6 +7,26 @@ module.exports = function(environment) {
     environment,
     rootURL: '/',
     locationType: 'auto',
+    firebase: {
+      apiKey: "AIzaSyDYxT3M0cIOc5gViD7iXwcBDwbnkyXvpAU",
+      authDomain: "trisproto.firebaseapp.com",
+      databaseURL: "https://trisproto.firebaseio.com",
+      projectId: "trisproto",
+      storageBucket: 'trisproto.appspot.com',
+      messagingSenderId: "330763066650"
+    },
+
+    contentSecurityPolicy: {
+      'script-src': "'self' 'unsafe-eval' apis.google.com 'unsafe-inline'",
+      'frame-src': "'self' https://*.firebaseapp.com",
+      'connect-src': "'self' wss://*.firebaseio.com https://*.googleapis.com",
+      'default-src': "'none'",
+      'style-src': "'self' 'unsafe-inline' https://fonts.googleapis.com",
+      'font-src': "'self' fonts.gstatic.com",
+      'img-src': "'self' data:",
+      'media-src': "'self'"
+    } ,
+
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
