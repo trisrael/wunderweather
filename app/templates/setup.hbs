@@ -1,0 +1,23 @@
+{{#paper-select options=locations label="Location" selected=selectedLocation onChange=(action (mut selectedLocation)) as |location|}}
+  {{location.address}}
+{{/paper-select}}
+
+{{#if selectedLocation}}
+  <div>
+  <span>Start: </span> {{input type="date" value=(mut start)}}
+  <span>End: </span> {{input type="date" value=(mut end)}}
+</div>
+{{/if}}
+
+
+{{#if hasValidBooking}}
+<div>
+  <button {{action "createBooking"}}>Create Booking</button>
+</div>
+{{/if}}
+
+{{#each bookings}}
+  {{booking.id}}
+{{/each}}
+
+{{outlet}}

@@ -7,6 +7,7 @@ module.exports = function(environment) {
     environment,
     rootURL: '/',
     locationType: 'auto',
+
     firebase: {
       apiKey: "AIzaSyDYxT3M0cIOc5gViD7iXwcBDwbnkyXvpAU",
       authDomain: "trisproto.firebaseapp.com",
@@ -15,6 +16,8 @@ module.exports = function(environment) {
       storageBucket: 'trisproto.appspot.com',
       messagingSenderId: "330763066650"
     },
+
+
 
     contentSecurityPolicy: {
       'script-src': "'self' 'unsafe-eval' apis.google.com 'unsafe-inline'",

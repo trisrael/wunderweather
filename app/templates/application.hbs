@@ -1,16 +1,25 @@
-<screen>
-  <page>
-  <vbox>
-    {{#each model as |test|}}
-    <box>
-      {{#paper-checkbox value=value1 onChange=null}}
-        A checkbox:
-      {{/paper-checkbox}}
-      {{test.name}}
-    </box>
-    {{/each}}
-  </vbox>
+<section class="pad-xs VerticalColumn">
+  <h1>Weather in {{observationLoc.full}}</h1>
+  <h3>{{observationTime}}</h3>
 
-{{outlet}}
-</page>
-</screen>
+  <section>
+    <div class="Overview flexrow font-size-mega">
+      <div>
+        {{temp.fahrenheight}}°F
+      </div>
+      <div class="Overview-high">
+        High of {{highestTempHour.temp.fahrenheight}}°F
+      </div>
+      <div class="Overview-low">
+        Low of {{lowestTempHour.temp.fahrenheight}}°F
+
+      </div>
+    </div>
+
+  </section>
+
+
+  <footer>
+  <img src="https://www.wunderground.com/logos/images/wundergroundLogo_4c.jpg">
+  </footer>
+</section>
