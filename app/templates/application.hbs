@@ -2,22 +2,53 @@
   <h1>Weather in {{observationLoc.full}}</h1>
   <h3>{{observationTime}}</h3>
 
-  <section>
-    <div class="Overview flexrow font-size-mega">
-      <div>
-        {{temp.fahrenheight}}°F
-      </div>
-      <div class="Overview-high">
-        High of {{highestTempHour.temp.fahrenheight}}°F
-      </div>
-      <div class="Overview-low">
-        Low of {{lowestTempHour.temp.fahrenheight}}°F
 
+<div class="flexrow">
+  <div>
+    <span>Today</span>
+    <div class="Overview font-size-mega">
+      <div class="pad-xs-5 font-600">
+        Current {{temp.fahrenheight}}°F
+      </div>
+      <div class="flexrow">
+        <div class="pad-xs-5 Overview-high bg-red-300">
+          High of {{highestTempHour.temp.fahrenheight}}°F
+        </div>
+        <div class="pad-xs-5 Overview-low bg-blue-400">
+          Low of {{lowestTempHour.temp.fahrenheight}}°F
+        </div>
       </div>
     </div>
+  </div>
 
-  </section>
+  <div class="mar-xs-20l border-xs">
+   {{#paper-select label="Hourly Detail" options=hourlyTemps selected=shownHour onChange=(action (mut shownHour)) as |hour|}}
+      {{hour.civil}}
+   {{/paper-select}}
+   {{#if shownHour}}
+     <div class="pad-xs-5 Overview-high font-size-mega">
+       {{shownHour.temp.fahrenheight}}°F
+     </div>
+   {{/if}}
+  </div>
 
+
+</div>
+
+<div class="mar-xs-20">
+  <span>This Week</span>
+  <div class="Overview font-size-mega">
+    <div class="flexrow">
+      <div class="pad-xs-5 Overview-high bg-red-300">
+        High of {{highest10dayTempHour.temp.fahrenheight}}°F
+      </div>
+      <div class="pad-xs-5 Overview-low bg-blue-400">
+        Low of {{lowest10dayTempHour.temp.fahrenheight}}°F
+      </div>
+    </div>
+  </div>
+
+</div>
 
   <footer>
   <img src="https://www.wunderground.com/logos/images/wundergroundLogo_4c.jpg">
