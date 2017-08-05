@@ -1,0 +1,16 @@
+  <span>{{title}}</span>
+  <div class="Overview font-size-mega">
+    {{#if comparingTemperature}}
+      <div class="pad-xs-5 font-600">
+        {{or comparingTemperatureLabel "Current"}} {{temp.fahrenheight}}°F
+      </div>
+    {{/if}}
+    <div class="flexrow">
+      <div class="pad-xs-5 Overview-high bg-red-300">
+        High of {{highestTempHour.temp.fahrenheight}}°F
+      </div>
+      <div class="pad-xs-5 Overview-low bg-blue-400">
+        Low of {{lowestTempHour.temp.fahrenheight}}°F
+      </div>
+    </div>
+  </div>
