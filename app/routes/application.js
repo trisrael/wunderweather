@@ -5,7 +5,7 @@ export default Ember.Route.extend({
 
   model() {
 
-    // seems thats hourly_forecast... are concated... split to deal
+    // seems thats "hourly_forecast" gets overwritten when using both hourly and hourly10
     return Ember.RSVP.hash({
       conditions: $.get("http://api.wunderground.com/api/b8f3d2f816f15ef9/conditions/hourly/hourly10day/q/CA/San_Francisco.json"),
       hourly: $.get("http://api.wunderground.com/api/b8f3d2f816f15ef9/hourly/q/CA/San_Francisco.json"),

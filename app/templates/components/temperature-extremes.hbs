@@ -7,10 +7,10 @@
     {{/if}}
     <div class="flexrow">
       <div class="pad-xs-5 Overview-high bg-red-300">
-        High of {{highestTempHour.temp.fahrenheight}}°F
+        High of {{get (find-extreme-hour temperatureHours 'high') "temp.fahrenheight"}}°F
       </div>
       <div class="pad-xs-5 Overview-low bg-blue-400">
-        Low of {{lowestTempHour.temp.fahrenheight}}°F
+        Low of {{get (find-extreme-hour temperatureHours 'low') "temp.fahrenheight"}}°F
       </div>
     </div>
   </div>
