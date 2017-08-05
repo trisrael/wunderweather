@@ -1,4 +1,5 @@
 import Ember from 'ember';
+const { get } = Ember;
 
 export default Ember.Route.extend({
 
@@ -16,48 +17,47 @@ export default Ember.Route.extend({
     let observation_location, observation_time;
     ({ observation_location, observation_time } = conditions.current_observation);
 
-
-
-    let hourlyTemps = hourly.hourly_forecast.map((raw) => {
-      let flatten = Object.assign({},raw.FCTTIME, raw, {temp: {celcius: parseFloat(raw.temp.metric), fahrenheight: parseFloat(raw.temp.english) }});
-      delete flatten.FCTTIME;
-      return flatten;
-    }).sort((a,b)=> { return parseInt(a.hour) > parseInt(b.hour) ? 1 : - 1 });
+    let hourlyTemps = hourly.hourly_forecast
+      .map(formatHourData)
+      .sort(simpleNumericComparatoryBy.bind(null, 'hour'));
 
     // not gonna really be the weekly low/high as this is 10 day
     // NOTE: filter down to around current day (7 days of weekday plus weekend)
-    let hourly10Temps = hourly10.hourly_forecast.map((raw) => {
-      let flatten = Object.assign({},raw.FCTTIME, raw, {temp: {celcius: parseFloat(raw.temp.metric), fahrenheight: parseFloat(raw.temp.english) }});
-      delete flatten.FCTTIME;
-      return flatten;
-    }).sort((a,b)=> { return parseInt(a.epoch) > parseInt(b.epoch) ? 1 : - 1 });
-
-    let lowest10dayTempHour = hourly10Temps.reduce((lowestHour, nextHour) => {
-      return nextHour.temp.celcius < lowestHour.temp.celcius ? nextHour : lowestHour;
-    }, hourly10Temps[0]);
-
-    let highest10dayTempHour = hourly10Temps.reduce((highestHour, nextHour) => {
-      return nextHour.temp.celcius > highestHour.temp.celcius ? nextHour : highestHour;
-    }, hourly10Temps[0]);
+    let hourly10Temps = hourly10.hourly_forecast
+      .map(formatHourData)
+      .sort(simpleNumericComparatoryBy.bind(null, 'epoch'));
 
     controller.setProperties({
-      temp: {celsius: conditions.current_observation.temp_c, fahrenheight: conditions.current_observation.temp_f},
+      temp: {
+        celsius: conditions.current_observation.temp_c,
+        fahrenheight: conditions.current_observation.temp_f
+      },
       observationLoc: observation_location,
       observationTime: observation_time,
-      hourlyTemps: hourlyTemps,
-      highestTempHour: hourlyTemps.reduce((highestHour, nextHour) => {
-        return nextHour.temp.celcius > highestHour.temp.celcius ? nextHour : highestHour;
-      }, hourlyTemps[0]),
-      lowestTempHour: hourlyTemps.reduce((lowestHour, nextHour) => {
-        return nextHour.temp.celcius < lowestHour.temp.celcius ? nextHour : lowestHour;
-      }, hourlyTemps[0]),
-      highest10dayTempHour,
-      lowest10dayTempHour,
-      hourlyBreakdown:[ {x:0, y: 2}, {x:1, y: 3}]
+      hourlyTemps,
+      hourly10Temps
     });
   }
 
 });
 
-// temp
+// Given a wunderground hour data, move FCTTIME up
+// Format temperature format in more consistent fashion
+function formatHourData(rawHour) {
+  let flatten = Object.assign(
+    {},
+    rawHour.FCTTIME,
+    rawHour,
+    {temp: {celcius: parseFloat(rawHour.temp.metric), fahrenheight: parseFloat(rawHour.temp.english) }}
+  );
+  delete flatten.FCTTIME;
+  return flatten;
+}
+
+// Comparator that takes a `path` for a given object and sorts by ascending
+// based on relative float values.
 //
+// Be sure to pass a `path` that contains a float or an int, or a string containing those.
+function simpleNumericComparatoryBy(path, a, b) {
+  return parseFloat(get(a, path)) > parseFloat(get(b, path)) ? 1 : -1;
+}
