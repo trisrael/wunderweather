@@ -2,9 +2,14 @@
   <section class="content">
     <header>
       <h1>Weather in {{observationLoc.full}}</h1>
-      <h3>{{observationTime}}</h3>
+
     </header>
 
+
+    <div class="font-size-20">
+      <h3 class="flexrow ScrollText">Local time:  {{liquid-bind hours class="mar-xs-5l"}}:{{liquid-bind minutes}}{{liquid-bind ampm}}</h3>
+      <h3>{{observationTime}}</h3>
+    </div>
     {{temperature-extremes title="Today" comparingTemperature=temp temperatureHours=hourlyTemps}}
 
     <div class="flexrow">

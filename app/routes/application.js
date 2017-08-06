@@ -23,7 +23,7 @@ export default Ember.Route.extend({
 
         // check if any updates fetched
         if (observation_time !== this.controller.get('observationTime')) {
-          
+
 
         }
       });
