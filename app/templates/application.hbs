@@ -1,34 +1,23 @@
-<section class="pad-xs VerticalLayout">
-  <header>
-    <h1>Weather in {{observationLoc.full}}</h1>
-    <h3>{{observationTime}}</h3>
-  </header>
+<section class="pad-xs VerticalLayout VerticalLayout--fullHeight between-xs WeatherNow">
+  <section class="content">
+    <header>
+      <h1>Weather in {{observationLoc.full}}</h1>
+      <h3>{{observationTime}}</h3>
+    </header>
 
-  {{temperature-extremes title="Today" comparingTemp=temp temperatureHours=hourlyTemps}}
+    {{temperature-extremes title="Today" comparingTemperature=temp temperatureHours=hourlyTemps}}
 
-  <div class="flexrow">
-    {{hourly-temperature-graph temperatureHours=morningTemps}}
-    {{hourly-temperature-graph temperatureHours=nightTemps}}
-  </div>
+    <div class="flexrow">
+      {{hourly-temperature-graph temperatureHours=morningTemps}}
+      {{hourly-temperature-graph temperatureHours=nightTemps}}
+    </div>
 
+    <div class="mar-xs-15t border-xs-t pad-xs-5t">
+      {{temperature-extremes title="This Week" temperatureHours=hourly10Temps}}
+    </div>
+  </section>
 
-  <div class="mar-xs-20l border-xs">
-   {{! #paper-select label="Hourly Detail" options=hourlyTemps selected=shownHour onChange=(action (mut shownHour)) as |hour|}}
-   {{!hour.civil}}
-  {{!- /paper-select}}
-
-   {{#if shownHour}}
-     <div class="pad-xs-5 Overview-high font-size-mega">
-       {{shownHour.temp.fahrenheight}}°F
-     </div>
-   {{/if}}
-  </div>
-
-  <div class="mar-xs-20">
-    {{temperature-extremes title="This Week" temperatureHours=hourly10Temps}}
-  </div>
-
-  <footer>
+  <footer class="flexrow center-xs">
     <img src="https://www.wunderground.com/logos/images/wundergroundLogo_4c.jpg">
   </footer>
 

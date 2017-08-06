@@ -8,6 +8,14 @@ module.exports = function(environment) {
     rootURL: '/',
     locationType: 'auto',
 
+    moment: {
+      // Options:
+      // 'all' - all years, all timezones
+      // 'subset' - subset of the timezone data to cover 2010-2020 (or 2012-2022 as of 0.5.12). all timezones.
+      // 'none' - no data, just timezone API
+      includeTimezone: 'all'
+    },
+
     firebase: {
       apiKey: "AIzaSyDYxT3M0cIOc5gViD7iXwcBDwbnkyXvpAU",
       authDomain: "trisproto.firebaseapp.com",
@@ -16,8 +24,6 @@ module.exports = function(environment) {
       storageBucket: 'trisproto.appspot.com',
       messagingSenderId: "330763066650"
     },
-
-
 
     contentSecurityPolicy: {
       'script-src': "'self' 'unsafe-eval' apis.google.com 'unsafe-inline'",

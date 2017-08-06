@@ -1,11 +1,12 @@
   <span>{{title}}</span>
   <div class="Overview font-size-mega">
-    {{#if comparingTemperature}}
-      <div class="pad-xs-5 font-600">
-        {{or comparingTemperatureLabel "Current"}} {{temp.fahrenheight}}°F
-      </div>
-    {{/if}}
+
     <div class="flexrow">
+      {{#if comparingTemperature}}
+        <div class="pad-xs-5 font-600">
+          {{or comparingTemperatureLabel "Current"}} {{comparingTemperature.fahrenheight}}°F
+        </div>
+      {{/if}}
       <div class="pad-xs-5 Overview-high bg-red-300">
         High of {{get (find-extreme-hour temperatureHours 'high') "temp.fahrenheight"}}°F
       </div>

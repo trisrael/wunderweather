@@ -1,14 +1,17 @@
 {{!-  {{concat "0 0 " highestTemperature " 24"}}
 {{#with (hash
   high=(get (find-extreme-hour temperatureHours 'high') "temp.fahrenheight")
+
   low=(get (find-extreme-hour temperatureHours 'low') "temp.fahrenheight"))
+
   diff=(dec (get (find-extreme-hour temperatureHours 'high') "temp.fahrenheight")
      (get (find-extreme-hour temperatureHours 'low') "temp.fahrenheight"))
+
    as |temps|}}
   <svg version="1.2"
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink"
-      viewBox={{concat "0 0 450 80"}}
+      viewBox={{concat "0 0 450 120"}}
       class="graph" aria-labelledby="title" role="img">
     {{#if title}}<title class="HourlyGraph-title">{{title}}</title>{{/if}}
 
@@ -18,29 +21,29 @@
       <line x1="0" x2="95%" y1="40" y2="40"></line>
     </g>
 
-    <g class="labels x-labels">
+    <g class="labels x-labels grid x-grid">
       {{#each hourLabels as |day index|}}
         <text x={{inc 30 (multi index 35)}} y=60>{{moment-format day "h" "HH"}}</text>
+        <line stroke-dasharray="3, 3" stroke-opacity="0.4" x2={{inc 47.5 (multi index 35)}} x1={{inc 47.5 (multi index 35)}} y1="5" y2="75"></line>
+
         {{! Add AM/PM label at 12 am and 12 pm}}
         {{#if (or (eq index 0) (eq index 12))}}
-          <text font-size="18" x={{inc 25 (multi index 35)}} y="80" class="fg-grey-200">{{moment-format day "A" "HH"}}</text>
+          <text font-size="15" x={{inc 25 (multi index 35)}} y="80" class="fg-grey-200">{{moment-format day "A" "HH"}}</text>
         {{/if}}
-
       {{/each}}
     </g>
 
     {{!- Y Axis }}
 
     <g class="grid y-grid" class="HourlyGraph-yGrid">
-      <line x1="0" x2="0" y1="0" y2="40"></line>
+      <line x1="0" x2="0" y1="0" y2="80"></line>
     </g>
-
 
     {{!- Data }}
     <g class="data" data-setname="Our first data set">
       {{#each temperatureHours as |hourInfo index|}}
         <text size="10" x={{inc 20 (multi index 35)}} y={{dec 30 (get hourInfo 'temp.fahrenheight')}}>{{hourInfo.temp.fahrenheight}}</text>
-        <image height="15" href={{hourInfo.icon_url}}  x={{inc 20 (multi index 35)}} y={{dec 60 (get hourInfo 'temp.fahrenheight')}}></image>
+        <image height="25" href={{hourInfo.icon_url}}  x={{inc 15 (multi index 35)}} y={{dec 65 (get hourInfo 'temp.fahrenheight')}}></image>
         {{#if (eq index 0)}}
           <text font-size="11" x={{inc 10 (multi index 35)}} y="-20" class="label-title">Temperature (°F)</text>
         {{/if}}
