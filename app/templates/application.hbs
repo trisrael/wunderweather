@@ -6,12 +6,17 @@
 
   {{temperature-extremes title="Today" comparingTemp=temp temperatureHours=hourlyTemps}}
 
-  {{hourly-temperature-graph temperatureHours=hourlyTemps}}
+  <div class="flexrow">
+    {{hourly-temperature-graph temperatureHours=morningTemps}}
+    {{hourly-temperature-graph temperatureHours=nightTemps}}
+  </div>
+
 
   <div class="mar-xs-20l border-xs">
-   {{#paper-select label="Hourly Detail" options=hourlyTemps selected=shownHour onChange=(action (mut shownHour)) as |hour|}}
-      {{hour.civil}}
-   {{/paper-select}}
+   {{! #paper-select label="Hourly Detail" options=hourlyTemps selected=shownHour onChange=(action (mut shownHour)) as |hour|}}
+   {{!hour.civil}}
+  {{!- /paper-select}}
+
    {{#if shownHour}}
      <div class="pad-xs-5 Overview-high font-size-mega">
        {{shownHour.temp.fahrenheight}}°F

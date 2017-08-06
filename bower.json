@@ -2,6 +2,7 @@
   "name": "sonder",
   "dependencies": {
     "d3": "~3.5.3",
-    "rxjs": "~2.3.24"
+    "rxjs": "~2.3.24",
+    "lodash": "^4.17.4"
   }
 }

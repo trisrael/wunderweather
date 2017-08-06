@@ -17,9 +17,15 @@ export default Ember.Route.extend({
     let observation_location, observation_time;
     ({ observation_location, observation_time } = conditions.current_observation);
 
+    let seenHours = []; // cache for checking for already counted hour
     let hourlyTemps = hourly.hourly_forecast
       .map(formatHourData)
-      .sort(simpleNumericComparatoryBy.bind(null, 'hour'));
+      .sort(simpleNumericComparatoryBy.bind(null, 'hour'))
+      .filter(({civil}) => { //ensure only single 10am // not choosing particularly
+        if (seenHours.indexOf(civil) !== -1) { return false };
+        seenHours.push(civil);
+        return true;
+      });
 
     // not gonna really be the weekly low/high as this is 10 day
     // NOTE: filter down to around current day (7 days of weekday plus weekend)
@@ -35,6 +41,8 @@ export default Ember.Route.extend({
       observationLoc: observation_location,
       observationTime: observation_time,
       hourlyTemps,
+      morningTemps: hourlyTemps.filter(({hour}) => hour < 12),
+      nightTemps: hourlyTemps.filter(({hour}) => hour >= 12),
       hourly10Temps
     });
   }
