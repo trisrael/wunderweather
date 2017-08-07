@@ -1,17 +1,8 @@
-{{!-  {{concat "0 0 " highestTemperature " 24"}}
-{{#with (hash
-  high=(get (find-extreme-hour temperatureHours 'high') "temp.fahrenheight")
-
-  low=(get (find-extreme-hour temperatureHours 'low') "temp.fahrenheight"))
-
-  diff=(dec (get (find-extreme-hour temperatureHours 'high') "temp.fahrenheight")
-     (get (find-extreme-hour temperatureHours 'low') "temp.fahrenheight"))
-
-   as |temps|}}
+{{differenceTemperature}}
   <svg version="1.2"
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink"
-      viewBox={{concat "0 0 450 120"}}
+      viewBox={{concat "0 0 450 " height}}
       class="graph" aria-labelledby="title" role="img">
     {{#if title}}<title class="HourlyGraph-title">{{title}}</title>{{/if}}
 
@@ -40,14 +31,13 @@
     </g>
 
     {{!- Data }}
-    <g class="data" data-setname="Our first data set">
-      {{#each temperatureHours as |hourInfo index|}}
-        <text size="10" x={{inc 20 (multi index 35)}} y={{dec 30 (get hourInfo 'temp.fahrenheight')}}>{{hourInfo.temp.fahrenheight}}</text>
-        <image height="25" href={{hourInfo.icon_url}}  x={{inc 15 (multi index 35)}} y={{dec 65 (get hourInfo 'temp.fahrenheight')}}></image>
+    <g class="data">
+      {{#each tempHoursWithYs as |hourInfo index|}}
+        <text size="10" x={{inc 20 (multi index 35)}} y={{hourInfo.yCoord}}>{{hourInfo.temp.fahrenheight}}</text>
+        <image height="25" href={{hourInfo.icon_url}}  x={{inc 15 (multi index 35)}} y={{dec hourInfo.yCoord 20}}></image>
         {{#if (eq index 0)}}
           <text font-size="11" x={{inc 10 (multi index 35)}} y="-20" class="label-title">Temperature (°F)</text>
         {{/if}}
       {{/each}}
     </g>
   </svg>
-{{/with}}
