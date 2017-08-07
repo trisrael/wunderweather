@@ -9,6 +9,8 @@
 
 .ember-application > .ember-view { height: 100%; }
 
+.liquid-outlet, .liquid-container, .liquid-child { display: inline-block; vertical-align: top; }
+
 .graph .labels.x-labels {
   text-anchor: middle;
 }
@@ -41,3 +43,5 @@
   fill: #888;
   stroke-width: 1;
 }
+
+@import "ember-power-select";

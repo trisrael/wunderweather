@@ -1,20 +1,31 @@
 <section class="pad-xs VerticalLayout VerticalLayout--fullHeight between-xs WeatherNow">
   <section class="content">
     <header>
-      <h1>Weather in {{observationLoc.full}}</h1>
+      <h1>Weather in {{#power-select
+        search=(action "autocompleteCities")
+        selected=selectedCity
+        oninput=(action (mut cityQuery))
+        onchange=(action (mut selectedCity))
+        as |city|}}
+        {{city.name}}
+      {{/power-select}}
+  </h1>
 
     </header>
 
-
     <div class="font-size-20">
-      <h3 class="flexrow ScrollText">Local time:  {{liquid-bind hours class="mar-xs-5l"}}:{{liquid-bind minutes}}{{liquid-bind ampm}}</h3>
-      <h3>{{observationTime}}</h3>
+      <h3 class="flexrow ScrollText">Local time: {{liquid-bind hours use="toDown" class="mar-xs-5l"}}:{{liquid-bind minutes use="toDown"}}{{liquid-bind ampm use="toDown"}}</h3>
+      <h3>{{liquid-bind observationTime use="fade"}}</h3>
     </div>
     {{temperature-extremes title="Today" comparingTemperature=temp temperatureHours=hourlyTemps}}
 
     <div class="flexrow">
-      {{hourly-temperature-graph temperatureHours=morningTemps}}
-      {{hourly-temperature-graph temperatureHours=nightTemps}}
+      {{#liquid-bind morningTempsHashified use="toDown"}}
+        {{hourly-temperature-graph temperatureHours=morningTemps}}
+      {{/liquid-bind}}
+      {{#liquid-bind nightTempsHashified use="toDown"}}
+        {{hourly-temperature-graph temperatureHours=nightTemps}}
+      {{/liquid-bind}}
     </div>
 
     <div class="mar-xs-15t border-xs-t pad-xs-5t">

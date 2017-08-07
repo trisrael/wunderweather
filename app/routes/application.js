@@ -16,15 +16,15 @@ export default Ember.Route.extend({
 
   actions: {
     checkForUpdates() {
-      fetchDataForCity().then((data) => {
-        let {conditions, hourly, hourl10} = data;
+      // Switch to New York
+      fetchDataForCity('10001.1.99999').then((data) => {
+        let {conditionsAndHourly, hourl10} = data;
         let observation_time, temp_c, temp_f;
-        ({ observation_time, temp_c, temp_f } = conditions.current_observation);
+        ({ observation_time, temp_c, temp_f } = conditionsAndHourly.current_observation);
 
         // check if any updates fetched
         if (observation_time !== this.controller.get('observationTime')) {
-
-
+          this.controller.setProperties(buildControllerProperties(data));
         }
       });
     }
@@ -32,21 +32,21 @@ export default Ember.Route.extend({
 
 });
 
-function fetchDataForCity(city = "San_Francisco") {
+function fetchDataForCity(city_id = "94102.1.99999") {
   let randNumber = getRandomNumber();
+  // In order to get non browser cached data from the server
   return Ember.RSVP.hash({
-    conditions: $.get(`http://api.wunderground.com/api/b8f3d2f816f15ef9/conditions/q/CA/${city}.json?NO304=${randNumber}`),
-    hourly: $.get(`http://api.wunderground.com/api/b8f3d2f816f15ef9/hourly/q/CA/${city}.json?NO304=${randNumber}`),
-    hourly10: $.get(`http://api.wunderground.com/api/b8f3d2f816f15ef9/hourly10day/q/CA/${city}.json?NO304=${randNumber}`),
+    conditionsAndHourly: $.get(`http://api.wunderground.com/api/274241323251e02d/conditions/hourly/q/${city_id}.json?NO304=${randNumber}`),
+    hourly10: $.get(`http://api.wunderground.com/api/274241323251e02d/hourly10day/q/${city_id}.json?NO304=${randNumber}`),
   });
 }
 
-function buildControllerProperties({conditions, hourly10, hourly}) {
+function buildControllerProperties({conditionsAndHourly, hourly10}) {
   let observation_location, observation_time;
-  ({ observation_location, observation_time } = conditions.current_observation);
+  ({ observation_location, observation_time } = conditionsAndHourly.current_observation);
 
   let seenHours = []; // cache for checking for already counted hour
-  let hourlyTemps = hourly.hourly_forecast
+  let hourlyTemps = conditionsAndHourly.hourly_forecast
     .map(formatHourData)
     .sort(simpleNumericComparatoryBy.bind(null, 'hour'))
     .filter(({civil}) => { //ensure only single 10am // not choosing particularly
@@ -63,8 +63,8 @@ function buildControllerProperties({conditions, hourly10, hourly}) {
 
   let properties = {
       temp: {
-        celsius: conditions.current_observation.temp_c,
-        fahrenheight: conditions.current_observation.temp_f
+        celsius: conditionsAndHourly.current_observation.temp_c,
+        fahrenheight: conditionsAndHourly.current_observation.temp_f
       },
       observationLoc: observation_location,
       observationTime: observation_time,
