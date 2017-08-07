@@ -1,25 +1,15 @@
 import Ember from 'ember';
 
-const POLL_INTERVAL = 5 * 1000;
+const POLL_INTERVAL = 3 * 60 * 1000;
 
 export default Ember.Controller.extend({
 
   store: Ember.inject.service(),
 
-  selectedCity: {
-
+  updateNowTime() {
+    this.set('now', moment().tz(this.get('observationTzLong')));
+    Ember.run.later(this, 'updateNowTime', 2 * 1000);
   },
-
-  cityQuery: "San Francisco",
-
-  searchCities() {
-    return this.get('store').query('city', { name: this.get('cityQuery') });
-  },
-
-  _updateNow: Ember.on('init', function() {
-    this.set('now', new Date());
-    Ember.run.later(this, '_updateNow', 2 * 1000);
-  }),
 
   now: null,
   hours: Ember.computed('now', function() {
@@ -46,19 +36,18 @@ export default Ember.Controller.extend({
     return Ember.A(this.get('nightTemps')).mapBy('temp.celcius').join('');
   }),
 
-  _pollingInterval: null,
   startPolling() {
     Ember.run.later(this, 'doPoll', POLL_INTERVAL)
   },
 
   doPoll() {
-    this.send('checkForUpdates');
-    //Ember.run.later(this, 'doPoll', POLL_INTERVAL)
+    this.send('checkForUpdates', this.get('selectedCity'));
+    Ember.run.later(this, 'doPoll', POLL_INTERVAL)
   },
 
   actions: {
-    autocompleteCities() {
-      Ember.run.debounce(this, this.searchCities, 300);
+    changeCity(city) {
+      this.send('checkForUpdates', city);
     }
   }
 

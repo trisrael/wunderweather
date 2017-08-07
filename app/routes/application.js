@@ -6,18 +6,24 @@ export default Ember.Route.extend({
   model() {
 
     // seems thats "hourly_forecast" gets overwritten when using both hourly and hourly10
-    return fetchDataForCity();
+    return Ember.RSVP.hash({
+      wunderground: fetchDataForCity(),
+      allCities: this.store.findAll('city') // fetch all 1000 cities from firebase
+    });
   },
 
-  setupController(controller, data) {
-    controller.setProperties(buildControllerProperties(data));
+  setupController(controller, { wunderground, allCities }) {
+    allCities = allCities.toArray().map((model) => model.toJSON())
+    controller.setProperties(buildControllerProperties(wunderground));
+    controller.setProperties({selectedCity: allCities.find(({city}) => city === "New York")});
+    controller.setProperties({allCities})
     controller.startPolling();
+    controller.updateNowTime();
   },
 
   actions: {
-    checkForUpdates() {
-      // Switch to New York
-      fetchDataForCity('10001.1.99999').then((data) => {
+    checkForUpdates(city) {
+      fetchDataForCity(city).then((data) => {
         let {conditionsAndHourly, hourl10} = data;
         let observation_time, temp_c, temp_f;
         ({ observation_time, temp_c, temp_f } = conditionsAndHourly.current_observation);
@@ -32,12 +38,13 @@ export default Ember.Route.extend({
 
 });
 
-function fetchDataForCity(city_id = "94102.1.99999") {
+function fetchDataForCity(city = {latitude: (37.776289), longitude: (-122.395234)}) {
+  let latlong = `${city.latitude},${city.longitude}`;
   let randNumber = getRandomNumber();
   // In order to get non browser cached data from the server
   return Ember.RSVP.hash({
-    conditionsAndHourly: $.get(`http://api.wunderground.com/api/274241323251e02d/conditions/hourly/q/${city_id}.json?NO304=${randNumber}`),
-    hourly10: $.get(`http://api.wunderground.com/api/274241323251e02d/hourly10day/q/${city_id}.json?NO304=${randNumber}`),
+    conditionsAndHourly: $.get(`http://api.wunderground.com/api/274241323251e02d/conditions/hourly/q/${latlong}.json?NO304=${randNumber}`),
+    hourly10: $.get(`http://api.wunderground.com/api/274241323251e02d/hourly10day/q/${latlong}.json?NO304=${randNumber}`),
   });
 }
 
@@ -68,6 +75,8 @@ function buildControllerProperties({conditionsAndHourly, hourly10}) {
       },
       observationLoc: observation_location,
       observationTime: observation_time,
+      observationTzLong: conditionsAndHourly.current_observation.local_tz_long,
+      observationTz: conditionsAndHourly.current_observation.local_tz_short,
       hourlyTemps,
       morningTemps: hourlyTemps.filter(({hour}) => hour < 12),
       nightTemps: hourlyTemps.filter(({hour}) => hour >= 12),

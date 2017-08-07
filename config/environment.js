@@ -17,12 +17,12 @@ module.exports = function(environment) {
     },
 
     firebase: {
-      apiKey: "AIzaSyCyMqoVxreTq3Vc91ZlzTdl-P5Pro9dqeE",
-      authDomain: "neurotrig-2a869.firebaseapp.com",
-      databaseURL: "https://neurotrig-2a869.firebaseio.com",
-      projectId: "neurotrig-2a869",
-      storageBucket: "neurotrig-2a869.appspot.com",
-      messagingSenderId: "321023762844"
+      apiKey: "AIzaSyDYxT3M0cIOc5gViD7iXwcBDwbnkyXvpAU",
+      authDomain: "trisproto.firebaseapp.com",
+      databaseURL: "https://trisproto.firebaseio.com",
+      projectId: "trisproto",
+      storageBucket: "trisproto.appspot.com",
+      messagingSenderId: "330763066650"
     },
 
     contentSecurityPolicy: {

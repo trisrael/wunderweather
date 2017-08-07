@@ -1,17 +1,19 @@
-  <span>{{title}}</span>
+  <div class="font-size-20 mar-xs-10b">{{title}}</div>
   <div class="Overview font-size-mega">
 
     <div class="flexrow">
       {{#if comparingTemperature}}
-        <div class="pad-xs-5 font-600">
-          {{or comparingTemperatureLabel "Current"}} {{liquid-bind comparingTemperature.fahrenheight use="toDown"}}°F
+        <div class="pad-xs-5 font-700 flexrow middle-xs">
+          <div>{{liquid-bind comparingTemperature.fahrenheight use="toDown"}}°F</div>
         </div>
       {{/if}}
-      <div class="pad-xs-5 Overview-high bg-red-200">
-        {{liquid-bind (get (find-extreme-hour temperatureHours 'high') "temp.fahrenheight") use="toDown"}}°F
-      </div>
-      <div class="pad-xs-5 Overview-low bg-blue-200">
-        {{liquid-bind (get (find-extreme-hour temperatureHours 'low') "temp.fahrenheight") use="toDown"}}°F
+      <div class="VerticalLayout">
+        <div class="pad-xs-10lr pad-xs-5t Overview-high bg-red-200">
+          {{liquid-bind (get (find-extreme-hour temperatureHours 'high') "temp.fahrenheight") use="toDown"}}°F
+        </div>
+        <div class="pad-xs-10lr pad-xs-5b Overview-low bg-blue-200">
+          {{liquid-bind (get (find-extreme-hour temperatureHours 'low') "temp.fahrenheight") use="toDown"}}°F
+        </div>
       </div>
     </div>
   </div>

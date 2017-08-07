@@ -9,7 +9,17 @@
 
 .ember-application > .ember-view { height: 100%; }
 
+.ember-power-select-trigger { width: 300px; font-size: 30px; }
+
 .liquid-outlet, .liquid-container, .liquid-child { display: inline-block; vertical-align: top; }
+
+.Overview-high {
+  border-radius: 7px 7px 0 0;
+}
+
+.Overview-low {
+  border-radius: 0 0 7px 7px;
+}
 
 .graph .labels.x-labels {
   text-anchor: middle;
@@ -24,7 +34,7 @@
   width: 450px;
 }
 
-.graph .grid {
+.graph .grid *:not(text) {
   stroke: #ccc;
   stroke-dasharray: 0;
   stroke-width: 1;

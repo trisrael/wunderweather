@@ -21,7 +21,7 @@
       <line x1="0" x2="95%" y1="40" y2="40"></line>
     </g>
 
-    <g class="labels x-labels grid x-grid">
+    <g class="labels x-labels x-grid grid">
       {{#each hourLabels as |day index|}}
         <text x={{inc 30 (multi index 35)}} y=60>{{moment-format day "h" "HH"}}</text>
         <line stroke-dasharray="3, 3" stroke-opacity="0.4" x2={{inc 47.5 (multi index 35)}} x1={{inc 47.5 (multi index 35)}} y1="5" y2="75"></line>

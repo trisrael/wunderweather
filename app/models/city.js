@@ -1,7 +1,7 @@
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  name: DS.attr('string'),
-  lat: DS.attr('number'),
-  long: DS.attr('number')
+  city: DS.attr('string'),
+  latitude: DS.attr('number'),
+  longitude: DS.attr('number')
 });
